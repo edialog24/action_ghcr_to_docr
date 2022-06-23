@@ -39,9 +39,6 @@ runs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ inputs.ghcr_token }}
-      - name: delete remote tag
-        run: doctl registry repository delete-tag ${{inputs.to_image_name || inputs.from_image_name}} ${{ inputs.to_image_tag || inputs.from_image_tag }} -f
-        shell: bash
       - name: Push Image to docr
         uses: edialog24/tag-push-action@v2.0.0
         with:

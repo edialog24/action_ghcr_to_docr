@@ -8,17 +8,19 @@ inputs:
   to_image_name: # id of input
     description: 'image name'
     required: false
-    default: '${{ inputs.from_image_name }}'
   from_image_tag: # id of input
     description: 'image tag'
     required: true
     default: ''
   to_image_tag: # id of input
     description: 'image tag'
-    required: true
-    default: '${{ inputs.from_image_tag }}'
+    required: false
   docr_token:
     description: 'digitalocean token'
+    required: true
+    default: ''
+  ghcr_token:
+    description: 'github token'
     required: true
     default: ''
 runs:
@@ -36,10 +38,10 @@ runs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ inputs.ghcr_token }}
       - name: Push Image to docr
         uses: edialog24/tag-push-action@v2.0.0
         with:
-          src: ghcr.io/edialog24/${{inputs.image_name}}:${{ inputs.from_image_tag }}
+          src: ghcr.io/edialog24/${{inputs.from_image_name}}:${{ inputs.from_image_tag }}
           dst: |
-            registry.digitalocean.com/swosj/${{inputs.image_name}}:${{ inputs.to_image_tag }}
+            registry.digitalocean.com/swosj/${{inputs.to_image_name || input.from_image_name}}:${{ inputs.to_image_tag || inputs.from_image_tag }}

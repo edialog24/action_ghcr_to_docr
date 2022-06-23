@@ -1,0 +1,41 @@
+name: 'ghcr_to_dhcr'
+description: 'Greet someone'
+inputs:
+  from_image_name:  # id of input
+    description: 'image name'
+    required: true
+    default: ''
+  to_image_name: # id of input
+    description: 'image name'
+    required: false
+    default: ${{ inputs.from_image_name }}
+  from_image_tag: # id of input
+    description: 'image tag'
+    required: true
+    default: ''
+  to_image_tag: # id of input
+    description: 'image tag'
+    required: true
+    default: ${{ inputs.from_image_tag }}
+runs:
+  using: "composite"
+  steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+        shell: bash
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Image to docr
+        uses: edialog24/tag-push-action@v2.0.0
+        with:
+          src: ghcr.io/edialog24/${{inputs.image_name}}:${{ inputs.from_image_tag }}
+          dst: |
+            registry.digitalocean.com/swosj/${{inputs.image_name}}:${{ inputs.to_image_tag }}

@@ -8,7 +8,7 @@ inputs:
   to_image_name: # id of input
     description: 'image name'
     required: false
-    default: ${{ inputs.from_image_name }}
+    default: '${{ inputs.from_image_name }}'
   from_image_tag: # id of input
     description: 'image tag'
     required: true
@@ -16,7 +16,7 @@ inputs:
   to_image_tag: # id of input
     description: 'image tag'
     required: true
-    default: ${{ inputs.from_image_tag }}
+    default: '${{ inputs.from_image_tag }}'
   docr_token:
     description: 'digitalocean token'
     required: true

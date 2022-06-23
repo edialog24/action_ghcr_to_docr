@@ -44,4 +44,4 @@ runs:
         with:
           src: ghcr.io/edialog24/${{inputs.from_image_name}}:${{ inputs.from_image_tag }}
           dst: |
-            registry.digitalocean.com/swosj/${{inputs.to_image_name || input.from_image_name}}:${{ inputs.to_image_tag || inputs.from_image_tag }}
+            registry.digitalocean.com/swosj/${{inputs.to_image_name || inputs.from_image_name}}:${{ inputs.to_image_tag || inputs.from_image_tag }}
